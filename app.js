@@ -13,10 +13,13 @@ app.use(bodyparser.urlencoded({extended: true}))
 /*ROOT API ROUTE*/
 app.get("/", async (req, res)=> {
     const resp = await getAtletiMatchToday()
-    const matchFulldate = new Date(resp.response.matchDate)
-    const preMatchDate = new Date(matchFulldate.getTime())
-    preMatchDate.setMinutes(preMatchDate.getMinutes()-30)
-    resp.response.preMatchDate = preMatchDate.toISOString()
+    const matchToday = resp.response.matchToday;
+    if(matchToday){
+        const matchFulldate = new Date(resp.response.matchDate)
+        const preMatchDate = new Date(matchFulldate.getTime())
+        preMatchDate.setMinutes(preMatchDate.getMinutes()-30)
+        resp.response.preMatchDate = preMatchDate.toISOString()
+    }
     res.status(resp.statuscode).json(resp.response)
 });
 
